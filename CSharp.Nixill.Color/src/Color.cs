@@ -1,4 +1,5 @@
 using System;
+using static Nixill.Utils.Interpolation;
 
 namespace Nixill
 {
@@ -77,6 +78,32 @@ namespace Nixill
       set => Blue = (float)((value <= 0.0031308) ?
         value * 12.92 :
         1.055 * Math.Pow(value, 1.0 / 2.4) - 0.055);
+    }
+
+    public float Hue
+    {
+      get
+      {
+        if (Red == Green && Green == Blue) return float.NaN;
+
+        if (Green > Red)
+        {
+          if (Blue > Green) /* > Red */ return Lerp(180, 240, InvLerp(Blue, Red, Green));
+          if /* Green > */ (Red > Blue) return Lerp(60, 120, InvLerp(Green, Blue, Red));
+          else /* Green > Blue ≥ Red */ return Lerp(180, 120, InvLerp(Green, Red, Blue));
+        }
+        else
+        {
+          if (Blue > Red) /* ≥ Green */ return Lerp(300, 240, InvLerp(Blue, Green, Red));
+          if /* Red ≥ */ (Green > Blue) return Lerp(60, 0, InvLerp(Red, Blue, Green));
+          else /* Red ≥ Blue ≥ Green */ return Lerp(300, 360, InvLerp(Red, Green, Blue));
+        }
+      }
+
+      set
+      {
+        if (value != value) throw new ArgumentException("NaN hue is not allowed")
+      }
     }
 
     public static implicit operator System.Drawing.Color(Nixill.Color clr)
