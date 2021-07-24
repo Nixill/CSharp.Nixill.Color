@@ -25,6 +25,30 @@ namespace Nixill
     public float Blue;
     public float Alpha;
 
+    public int IntRed
+    {
+      get => (int)(Red * 255);
+      set => Red = ((float)value) / 255f;
+    }
+
+    public int IntGreen
+    {
+      get => (int)(Green * 255);
+      set => Green = ((float)value) / 255f;
+    }
+
+    public int IntBlue
+    {
+      get => (int)(Blue * 255);
+      set => Blue = ((float)value) / 255f;
+    }
+
+    public int IntAlpha
+    {
+      get => (int)(Alpha * 255);
+      set => Alpha = ((float)value) / 255f;
+    }
+
     public float LinearRed
     {
       get => (float)((Red <= 0.04045) ?
