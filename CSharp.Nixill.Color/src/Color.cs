@@ -78,5 +78,24 @@ namespace Nixill
         value * 12.92 :
         1.055 * Math.Pow(value, 1.0 / 2.4) - 0.055);
     }
+
+    public static implicit operator System.Drawing.Color(Nixill.Color clr)
+    {
+      return System.Drawing.Color.FromArgb(
+        clr.IntAlpha,
+        clr.IntRed,
+        clr.IntGreen,
+        clr.IntBlue
+      );
+    }
+
+    public static implicit operator Nixill.Color(System.Drawing.Color clr)
+    => new Nixill.Color()
+    {
+      IntAlpha = clr.A,
+      IntRed = clr.R,
+      IntGreen = clr.G,
+      IntBlue = clr.B
+    };
   }
 }
