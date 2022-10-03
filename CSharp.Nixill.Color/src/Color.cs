@@ -1,4 +1,7 @@
 using System;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Nixill.Utils;
 using static Nixill.Utils.Interpolation;
 
 namespace Nixill
@@ -26,6 +29,7 @@ namespace Nixill
     public float Blue;
     public float Alpha;
 
+    // INTEGER COMPONENTS
     public int IntRed
     {
       get => (int)(Red * 255);
@@ -50,6 +54,7 @@ namespace Nixill
       set => Alpha = ((float)value) / 255f;
     }
 
+    // LINEAR RGB COMPONENTS
     public float LinearRed
     {
       get => (float)((Red <= 0.04045) ?
@@ -80,6 +85,8 @@ namespace Nixill
         1.055 * Math.Pow(value, 1.0 / 2.4) - 0.055);
     }
 
+    // HSV COMPONENTS
+    // Note: Hue is also used in HSL
     public float Hue
     {
       get
@@ -190,6 +197,117 @@ namespace Nixill
       }
     }
 
+    // HSL COMPONENTS
+    // Note: Since HSL Hue == HSV Hue, Hue is defined above.
+    public float Luminosity
+    {
+      get
+      {
+        float min = Math.Min(Red, Math.Min(Green, Blue));
+        float max = Value;
+
+        return (min + max) / 2f;
+      }
+
+      set
+      {
+        float sat = LSaturation;
+        float lum = value;
+
+        // Shortcut 1: 0 val is always black
+        if (lum == 0)
+        {
+          Red = 0;
+          Green = 0;
+          Blue = 0;
+          return;
+        }
+
+        // Shortcut 2: 1 val is always white
+        if (lum == 1)
+        {
+          Red = 1;
+          Green = 1;
+          Blue = 1;
+          return;
+        }
+
+        // Shortcut 3: 0 saturation means equal colors
+        // (if we're starting from black or white, assume 0 saturation)
+        // Note that this condition also checks for hue being NaN°.
+        if (sat == 0 || float.IsNaN(sat))
+        {
+          Red = lum;
+          Green = lum;
+          Blue = lum;
+          return;
+        }
+
+        // Otherwise, I'll just pull HSL to HSV formulas off Wikipedia
+        Value = lum + sat * Math.Min(lum, 1 - lum);
+        VSaturation = 2 * (1 - lum / Value);
+      }
+    }
+
+    public float LSaturation
+    {
+      get
+      {
+        float min = Math.Min(Red, Math.Min(Green, Blue));
+        float max = Value;
+
+        return (max - min) / (1 - Math.Abs(2 * Luminosity - 1));
+      }
+
+      set
+      {
+        float sat = value;
+        float lum = Luminosity;
+        float pSat = LSaturation;
+
+        // Shortcut 1: NaN saturation becomes black or white.
+        if (float.IsNaN(sat))
+        {
+          if (lum <= 0.5)
+          {
+            Red = 0;
+            Green = 0;
+            Blue = 0;
+          }
+          else
+          {
+            Red = 1;
+            Green = 1;
+            Blue = 1;
+          }
+          return;
+        }
+
+        // Shortcut 2: 0 saturation becomes greyscale.
+        if (sat == 0)
+        {
+          Red = lum;
+          Green = lum;
+          Blue = lum;
+          return;
+        }
+
+        // Not really a shortcut, but if we get here, we should make sure
+        // hue has a defined value.
+        if (float.IsNaN(Hue))
+        {
+          Red = 1;
+          Green = 0;
+          Blue = 0;
+        }
+
+        // Otherwise, I'll just pull HSL to HSV formulas off Wikipedia
+        Value = lum + sat * Math.Min(lum, 1 - lum);
+        VSaturation = 2 * (1 - lum / Value);
+      }
+    }
+
+    // CONVERSIONS
     public static implicit operator System.Drawing.Color(Nixill.Color clr)
     {
       return System.Drawing.Color.FromArgb(
@@ -216,5 +334,58 @@ namespace Nixill
       VSaturation = saturation,
       Hue = hue
     };
+
+    public static Color FromHSL(float hue, float saturation, float luminosity, float alpha = 1)
+    => new Color(1, 0, 0, alpha)
+    {
+      Luminosity = luminosity,
+      LSaturation = saturation,
+      Hue = hue
+    };
+
+    private const string HexCode = @"^(#|0x)?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})?$";
+    private static readonly Regex HexRegex = new Regex(HexCode, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+    public static Color FromRGBA(string code)
+    {
+      if (!HexRegex.TryMatch(code, out Match hexMatch)) throw new ArgumentException("FromRGBA(string) requires a valid six- or eight-digit hex code.");
+
+      code = code.ToLower();
+      if (code.StartsWith("#")) code = code[1..^0];
+      if (code.StartsWith("0x")) code = code[2..^0];
+
+      int red = NumberUtils.StringToInt(hexMatch.Groups[2].Value, 16);
+      int green = NumberUtils.StringToInt(hexMatch.Groups[3].Value, 16);
+      int blue = NumberUtils.StringToInt(hexMatch.Groups[4].Value, 16);
+      int alpha = 255;
+
+      if (hexMatch.Groups[5].Success)
+      {
+        alpha = NumberUtils.StringToInt(hexMatch.Groups[5].Value, 16);
+      }
+
+      return new Color()
+      {
+        IntRed = red,
+        IntGreen = green,
+        IntBlue = blue,
+        IntAlpha = alpha
+      };
+    }
+
+    public string ToRGBHex() =>
+      (new int[] { IntRed, IntGreen, IntBlue })
+        .Select(x => string.Format("{0:X2}", Math.Max(0, Math.Min(255, x))))
+        .Aggregate((x, y) => x + y);
+
+    public string ToARGBHex() =>
+      (new int[] { IntAlpha, IntRed, IntGreen, IntBlue })
+        .Select(x => string.Format("{0:X2}", Math.Max(0, Math.Min(255, x))))
+        .Aggregate((x, y) => x + y);
+
+    public string ToRGBAHex() =>
+      (new int[] { IntRed, IntGreen, IntBlue, IntAlpha })
+        .Select(x => string.Format("{0:X2}", Math.Max(0, Math.Min(255, x))))
+        .Aggregate((x, y) => x + y);
   }
 }
