@@ -1,10 +1,8 @@
-using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Nixill.Utils;
 using static Nixill.Utils.Interpolation;
 
-namespace Nixill
+namespace Nixill.Colors
 {
   public struct Color
   {
@@ -308,7 +306,7 @@ namespace Nixill
     }
 
     // CONVERSIONS
-    public static implicit operator System.Drawing.Color(Nixill.Color clr)
+    public static implicit operator System.Drawing.Color(Nixill.Colors.Color clr)
     {
       return System.Drawing.Color.FromArgb(
         clr.IntAlpha,
@@ -318,8 +316,8 @@ namespace Nixill
       );
     }
 
-    public static implicit operator Nixill.Color(System.Drawing.Color clr)
-    => new Nixill.Color()
+    public static implicit operator Nixill.Colors.Color(System.Drawing.Color clr)
+    => new Nixill.Colors.Color()
     {
       IntAlpha = clr.A,
       IntRed = clr.R,

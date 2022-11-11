@@ -14,7 +14,7 @@ namespace Nixill.Utils
         if (x < 0) x = 0;
         if (x > 1) x = 1;
       }
-      return (b * x) + (a * (1 - x));
+      return a + x * (b - a);
     }
 
     internal static float InvLerp(float a, float b, float p, bool clamp = false)
@@ -27,5 +27,7 @@ namespace Nixill.Utils
       }
       return x;
     }
+
+    internal static (float, float) Decompress(float x1, float x2, float by) => (x1 - (by * (x2 - x1)) / (2 * (1 - by)), ((1 - by / 2) * (x2 - x1)) / (1 - by) + x1);
   }
 }
