@@ -371,19 +371,60 @@ namespace Nixill.Colors
       };
     }
 
-    public string ToRGBHex() =>
-      (new int[] { IntRed, IntGreen, IntBlue })
-        .Select(x => string.Format("{0:X2}", Math.Max(0, Math.Min(255, x))))
-        .Aggregate((x, y) => x + y);
+    public static Color FromRGBA(int rgba) => FromRGBA((uint)rgba);
+    public static Color FromRGBA(uint rgba)
+      => new Color
+      {
+        IntRed = (int)(rgba & 0xFF000000) >> 24,
+        IntGreen = (int)(rgba & 0x00FF0000) >> 16,
+        IntBlue = (int)(rgba & 0x0000FF00) >> 8,
+        IntAlpha = (int)(rgba & 0x000000FF)
+      };
 
-    public string ToARGBHex() =>
-      (new int[] { IntAlpha, IntRed, IntGreen, IntBlue })
-        .Select(x => string.Format("{0:X2}", Math.Max(0, Math.Min(255, x))))
-        .Aggregate((x, y) => x + y);
+    public static Color FromARGB(int argb) => FromARGB((uint)argb);
+    public static Color FromARGB(uint argb)
+      => new Color
+      {
+        IntRed = (int)(argb & 0x00FF0000) >> 16,
+        IntGreen = (int)(argb & 0x0000FF00) >> 8,
+        IntBlue = (int)(argb & 0x000000FF),
+        IntAlpha = (int)(argb & 0xFF000000) >> 24
+      };
 
-    public string ToRGBAHex() =>
-      (new int[] { IntRed, IntGreen, IntBlue, IntAlpha })
-        .Select(x => string.Format("{0:X2}", Math.Max(0, Math.Min(255, x))))
-        .Aggregate((x, y) => x + y);
+    public static Color FromABGR(int abgr) => FromABGR((uint)abgr);
+    public static Color FromABGR(uint abgr)
+      => new Color
+      {
+        IntRed = (int)(abgr & 0x000000FF),
+        IntGreen = (int)(abgr & 0x0000FF00) >> 8,
+        IntBlue = (int)(abgr & 0x00FF0000) >> 16,
+        IntAlpha = (int)(abgr & 0xFF000000) >> 24
+      };
+
+    public static Color FromRGB(int rgb) => FromRGB((uint)rgb);
+    public static Color FromRGB(uint rgb) => FromARGB(0xFF000000 | rgb);
+
+    static int[] Clamp(params int[] ints)
+      => ints.Select(x => Math.Max(0, Math.Min(255, x))).ToArray();
+
+    public int[] ToRGBArray() => Clamp(IntRed, IntGreen, IntBlue);
+    public int[] ToARGBArray() => Clamp(IntAlpha, IntRed, IntGreen, IntBlue);
+    public int[] ToRGBAArray() => Clamp(IntRed, IntGreen, IntBlue, IntAlpha);
+    public int[] ToABGRArray() => Clamp(IntAlpha, IntBlue, IntGreen, IntRed);
+
+    static uint ToUint(int[] ints) => ints
+      .Aggregate((uint)0, (a, i) => (a << 8) | (uint)i);
+    static string ToHex(int[] ints) => ints
+      .Select(x => string.Format("{0:X2}", x)).Aggregate((x, y) => x + y);
+
+    public string ToRGBHex() => ToHex(ToRGBArray());
+    public string ToARGBHex() => ToHex(ToARGBArray());
+    public string ToABGRHex() => ToHex(ToABGRArray());
+    public string ToRGBAHex() => ToHex(ToRGBAArray());
+
+    public uint ToRGBUint() => ToUint(ToRGBArray());
+    public uint ToARGBUint() => ToUint(ToARGBArray());
+    public uint ToABGRUint() => ToUint(ToABGRArray());
+    public uint ToRGBAUint() => ToUint(ToRGBAArray());
   }
 }
