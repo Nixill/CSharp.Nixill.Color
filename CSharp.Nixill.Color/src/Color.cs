@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using Nixill.Utils;
+using Nixill.Utils.Extensions;
 using static Nixill.Utils.Interpolation;
 
 namespace Nixill.Colors
@@ -352,14 +353,14 @@ namespace Nixill.Colors
       if (code.StartsWith("#")) code = code[1..^0];
       if (code.StartsWith("0x")) code = code[2..^0];
 
-      int red = NumberUtils.StringToInt(hexMatch.Groups[2].Value, 16);
-      int green = NumberUtils.StringToInt(hexMatch.Groups[3].Value, 16);
-      int blue = NumberUtils.StringToInt(hexMatch.Groups[4].Value, 16);
+      int red = NumberConverter.Parse<int>(hexMatch.Groups[2].Value, 16);
+      int green = NumberConverter.Parse<int>(hexMatch.Groups[3].Value, 16);
+      int blue = NumberConverter.Parse<int>(hexMatch.Groups[4].Value, 16);
       int alpha = 255;
 
       if (hexMatch.Groups[5].Success)
       {
-        alpha = NumberUtils.StringToInt(hexMatch.Groups[5].Value, 16);
+        alpha = NumberConverter.Parse<int>(hexMatch.Groups[5].Value, 16);
       }
 
       return new Color()
