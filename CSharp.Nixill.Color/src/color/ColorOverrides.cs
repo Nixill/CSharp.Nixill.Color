@@ -51,23 +51,22 @@ public readonly partial struct Color : IEquatable<Color>
   ///     <see cref="Green"/>, <see cref="Blue"/>, and <see cref="InverseAlpha"/>
   ///     are each within just less than 1/255 of each other.
   ///   </para>
-  ///   <para>
-  ///     Specifically, the difference between each component must be less
-  ///     than <c>1 / 255.00006</c>.
-  ///   </para>
   /// </remarks>
   /// <param name="other">The other Color to compare.</param>
+  /// <param name="tolerance">
+  ///   The maximum difference between components, which defaults to
+  ///   <c>1 / 255.00006</c>.
+  /// </param>
   /// <returns>
   ///   <see langword="true"/> iff the two Colors are approximately equal
   ///   (see Remarks above); <see langword="false"/> otherwise.
   /// </returns>
-  public bool ApproxEquals(Color other)
+  public bool ApproxEquals(Color other, double tolerance = 0.003921567704729167)
   {
-    double factor = 1 / 255.00006;
-    return Math.Abs(this.Red - other.Red) < factor
-      && Math.Abs(this.Green - other.Green) < factor
-      && Math.Abs(this.Blue - other.Blue) < factor
-      && Math.Abs(this.InverseAlpha - other.InverseAlpha) < factor;
+    return Math.Abs(this.Red - other.Red) < tolerance
+      && Math.Abs(this.Green - other.Green) < tolerance
+      && Math.Abs(this.Blue - other.Blue) < tolerance
+      && Math.Abs(this.InverseAlpha - other.InverseAlpha) < tolerance;
   }
 
   /// <summary>

@@ -14,6 +14,18 @@ public readonly partial struct Color
   public Color WithAlpha(double alpha)
     => new Color(Red, Green, Blue, alpha);
 
+  /// <summary>
+  ///   Creates a new Color with the same <see cref="Red"/>, <see cref="Green"/>,
+  ///   and <see cref="Blue"/> values as this Color, and the specified
+  ///   <see cref="Alpha"/>.
+  /// </summary>
+  /// <param name="alpha">
+  ///   The Alpha (opacity) which the new Color should have.
+  /// </param>
+  /// <returns>The modified Color.</returns>
+  public Color WithIntAlpha(int alpha)
+    => new Color(Red, Green, Blue, alpha / 255.0);
+
   #region RGB, etc
   /// <summary>
   ///   Copies this color, changing the copy's <see cref="Red"/>, <see cref="Green"/>,

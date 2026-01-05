@@ -52,7 +52,7 @@ public readonly partial struct Color(double red, double green, double blue, doub
   ///   This component need not necessarily be clamped to 0..1, but values
   ///   outside this range may cause undefined behavior.
   /// </remarks>
-  private readonly double InverseAlpha = 1 - alpha;
+  readonly double InverseAlpha = 1 - alpha;
 
   /// <summary>
   ///   Get: The alpha (opaticy) component of this Color, normally
@@ -207,12 +207,6 @@ public readonly partial struct Color(double red, double green, double blue, doub
   }
 
   /// <summary>
-  ///   Get: The Intensity of this Color, defined as the average of all of
-  ///   its <see cref="Red"/>, <see cref="Green"/>, and <see cref="Blue"/>.
-  /// </summary>
-  public double Intensity => (Red + Green + Blue) / 3;
-
-  /// <summary>
   ///   Get: The Value of this Color, defined simply as its <see cref="MaxColor"/>.
   /// </summary>
   public double Value => MaxColor;
@@ -259,22 +253,6 @@ public readonly partial struct Color(double red, double green, double blue, doub
       double lum = (sort[2] + sort[0]) / 2;
       if (lum == 1 || lum == 0) return 0;
       return (sort[2] - sort[0]) / (1 - Math.Abs(2 * lum - 1));
-    }
-  }
-
-  /// <summary>
-  ///   Get: The Intensity-based Saturation of this Color, defined as the
-  ///   ratio between its <see cref="MinColor"/> to its
-  ///   <see cref="Intensity"/>, special-cased to 0 if the Intensity is 0.
-  /// </summary>
-  public double ISaturation
-  {
-    get
-    {
-      double[] sort = SortedColors;
-      double intensity = (Red + Green + Blue) / 3;
-      if (intensity == 0) return 0;
-      return 1 - (MinColor / intensity);
     }
   }
 }
