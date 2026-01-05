@@ -5,7 +5,7 @@ namespace Nixill.Internals;
 internal static class Internal
 {
   public static double Lerp(double x, double yAtX0, double yAtX1)
-    => x * (yAtX1 - yAtX0) + yAtX1;
+    => x * (yAtX1 - yAtX0) + yAtX0;
 
   public static double InvLerp(double y, double yAtX0, double yAtX1)
     => (y - yAtX0) / (yAtX1 - yAtX0);
