@@ -211,6 +211,54 @@ public readonly partial struct Color
     else if (!alphaFirst) return FromUIntRGBA(color);
     else return FromUIntARGB(color);
   }
+
+  /// <summary>
+  ///   Attempts to create a color from a hex string, where the bytes from
+  ///   left to right in the string represent red, green, blue, and (if
+  ///   present) alpha, respectively.
+  /// </summary>
+  /// <remarks>
+  ///   <para>
+  ///     A six-character hex string without an alpha component may also
+  ///     be passed to this method.
+  ///   </para>
+  ///   <para>
+  ///     A three- or four-character hex string may be passed to this
+  ///     method, in which case each character is doubled to represent a
+  ///     full byte.
+  ///   </para>
+  ///   <para>
+  ///     The hex code may be prefixed with <c>#</c>, <c>$</c>, <c>0x</c>
+  ///     (case insensitive), or nothing. No other prefix is allowed.
+  ///   </para>
+  /// </remarks>
+  /// <param name="hex">The string.</param>
+  /// <param name="result">
+  ///   If this method returns <see langword="true"/>, this parameter is
+  ///   set to the created color. Otherwise, this parameter is set to
+  ///   <see langword="default"/>(<see cref="Color"/>), which is opaque black.
+  /// </param>
+  /// <param name="alphaFirst">
+  ///   If true, the first byte represents alpha, not the last. Ignored if
+  ///   the input is a three-byte hex string.
+  /// </param>
+  /// <returns>
+  ///   Whether or not the input <paramref name="hex"/> is a valid color
+  ///   hex string.
+  /// </returns>
+  public static bool TryFromHex(string hex, out Color result, bool alphaFirst = false)
+  {
+    try
+    {
+      result = Color.FromHex(hex, alphaFirst);
+      return true;
+    }
+    catch (Exception)
+    {
+      result = default!;
+      return false;
+    }
+  }
   #endregion
 
   #region Grayscale
