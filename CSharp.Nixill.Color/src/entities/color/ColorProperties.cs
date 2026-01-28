@@ -166,7 +166,7 @@ public readonly partial struct Color(double red, double green, double blue, doub
   ///   (green), 240 (blue), and 360 (red). If this Color is fully
   ///   desaturated, 0 is returned.
   /// </summary>
-  public double HueDegrees => Hue0To6 * 60;
+  public double Hue => Hue0To6 * 60;
 
   /// <summary>
   ///   Get: The hue of this Color, on a scale spanning 0 (red), 2π/3

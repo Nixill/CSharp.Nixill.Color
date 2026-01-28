@@ -90,13 +90,13 @@ public readonly partial struct Color
   /// <summary>
   ///   Copies this Color, changing its Hue to the value specified.
   /// </summary>
-  /// <param name="hueDegrees">The new Hue in degrees.</param>
+  /// <param name="hue">The new Hue in degrees.</param>
   /// <returns>The modified Color.</returns>
-  public Color WithHue(double hueDegrees)
-    => Color.FromHMM(hueDegrees, MinColor, MaxColor, Alpha);
+  public Color WithHue(double hue)
+    => Color.FromHMM(hue, MinColor, MaxColor, Alpha);
 
   /// <summary>
-  ///   Copies this Color, changing its <see cref="HueDegrees"/>,
+  ///   Copies this Color, changing its <see cref="Hue"/>,
   ///   <see cref="MaxColor"/>, <see cref="MinColor"/>, and <see cref="Alpha"/>
   ///   as specified.
   /// </summary>
@@ -113,7 +113,7 @@ public readonly partial struct Color
   ///     and setting them equal to each other will set hue to 0.
   ///   </para>
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The Hue of the new Color in degrees.
   /// </param>
   /// <param name="minColor">
@@ -124,11 +124,11 @@ public readonly partial struct Color
   /// </param>
   /// <param name="alpha">The alpha (opacity) of the new Color.</param>
   /// <returns>The modified Color.</returns>
-  public Color WithHMM(double? hueDegrees = null, double? minColor = null, double? maxColor = null, double? alpha = null)
-    => Color.FromHMM(hueDegrees ?? HueDegrees, minColor ?? MinColor, maxColor ?? MaxColor, alpha ?? Alpha);
+  public Color WithHMM(double? hue = null, double? minColor = null, double? maxColor = null, double? alpha = null)
+    => Color.FromHMM(hue ?? Hue, minColor ?? MinColor, maxColor ?? MaxColor, alpha ?? Alpha);
 
   /// <summary>
-  ///   Copies this Color, changing its <see cref="HueDegrees"/>,
+  ///   Copies this Color, changing its <see cref="Hue"/>,
   ///   <see cref="MaxColor"/>, <see cref="MinColor"/>, and <see cref="Alpha"/>
   ///   as specified.
   /// </summary>
@@ -151,7 +151,7 @@ public readonly partial struct Color
   ///     and setting them equal to each other will set hue to 0.
   ///   </para>
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The Hue of the new Color in degrees.
   /// </param>
   /// <param name="minColor">
@@ -162,13 +162,13 @@ public readonly partial struct Color
   /// </param>
   /// <param name="alpha">The alpha (opacity) of the new Color.</param>
   /// <returns>The modified Color.</returns>
-  public Color WithIntHMM(int? hueDegrees = null, int? min = null, int? max = null, int? alpha = null)
-    => Color.FromHMM(hueDegrees ?? HueDegrees, min / 255.0 ?? MinColor, max / 255.0 ?? MaxColor, alpha / 255.0 ?? Alpha);
+  public Color WithIntHMM(int? hue = null, int? min = null, int? max = null, int? alpha = null)
+    => Color.FromHMM(hue ?? Hue, min / 255.0 ?? MinColor, max / 255.0 ?? MaxColor, alpha / 255.0 ?? Alpha);
   #endregion
 
   #region HSL
   /// <summary>
-  ///   Copies this Color, changing its <see cref="HueDegrees"/>,
+  ///   Copies this Color, changing its <see cref="Hue"/>,
   ///   <see cref="LSaturation"/>, <see cref="Luminosity"/>, and <see cref="Alpha"/>
   ///   as specified.
   /// </summary>
@@ -185,7 +185,7 @@ public readonly partial struct Color
   ///     and setting saturation to 0 will also set hue to 0.
   ///   </para>
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The hue of the new Color in degrees.
   /// </param>
   /// <param name="saturation">
@@ -196,11 +196,11 @@ public readonly partial struct Color
   /// </param>
   /// <param name="alpha">The alpha (opacity) of the new Color.</param>
   /// <returns>The modified Color.</returns>
-  public Color WithHSL(double? hueDegrees = null, double? saturation = null, double? luminosity = null, double? alpha = null)
-    => Color.FromHSL(hueDegrees ?? HueDegrees, saturation ?? LSaturation, luminosity ?? Luminosity, alpha ?? Alpha);
+  public Color WithHSL(double? hue = null, double? saturation = null, double? luminosity = null, double? alpha = null)
+    => Color.FromHSL(hue ?? Hue, saturation ?? LSaturation, luminosity ?? Luminosity, alpha ?? Alpha);
 
   /// <summary>
-  ///   Copies this Color, changing its <see cref="HueDegrees"/>,
+  ///   Copies this Color, changing its <see cref="Hue"/>,
   ///   <see cref="LSaturation"/>, <see cref="Luminosity"/>, and <see cref="Alpha"/>
   ///   as specified.
   /// </summary>
@@ -217,7 +217,7 @@ public readonly partial struct Color
   ///     and setting saturation to 0 will also set hue to 0.
   ///   </para>
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The hue of the new Color in degrees.
   /// </param>
   /// <param name="saturation">
@@ -228,11 +228,11 @@ public readonly partial struct Color
   /// </param>
   /// <param name="alpha">The alpha (opacity) of the new Color.</param>
   /// <returns>The modified Color.</returns>
-  public Color WithIntHSL(int? hueDegrees = null, int? saturation = null, int? luminosity = null, int? alpha = null)
-    => Color.FromHSL(hueDegrees ?? HueDegrees, saturation / 255.0 ?? LSaturation, luminosity / 255.0 ?? Luminosity, alpha / 255.0 ?? Alpha);
+  public Color WithIntHSL(int? hue = null, int? saturation = null, int? luminosity = null, int? alpha = null)
+    => Color.FromHSL(hue ?? Hue, saturation / 255.0 ?? LSaturation, luminosity / 255.0 ?? Luminosity, alpha / 255.0 ?? Alpha);
 
   /// <summary>
-  ///   Copies this Color, changing its <see cref="HueDegrees"/>,
+  ///   Copies this Color, changing its <see cref="Hue"/>,
   ///   <see cref="Chroma"/>, <see cref="Luminosity"/>, and <see cref="Alpha"/>
   ///   as specified.
   /// </summary>
@@ -251,18 +251,18 @@ public readonly partial struct Color
   ///     setting chroma to 0 will also set hue to 0.
   ///   </para>
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The hue of the new Color in degrees.
   /// </param>
   /// <param name="chroma">The chroma of the new Color.</param>
   /// <param name="luminosity">The luminosity of the new Color.</param>
   /// <param name="alpha">The alpha (opacity) of the new Color.</param>
   /// <returns>The modified Color.</returns>
-  public Color WithHCL(double? hueDegrees = null, double? chroma = null, double? luminosity = null, double? alpha = null)
-    => Color.FromHCL(hueDegrees ?? HueDegrees, chroma ?? Chroma, luminosity ?? Luminosity, alpha ?? Alpha);
+  public Color WithHCL(double? hue = null, double? chroma = null, double? luminosity = null, double? alpha = null)
+    => Color.FromHCL(hue ?? Hue, chroma ?? Chroma, luminosity ?? Luminosity, alpha ?? Alpha);
 
   /// <summary>
-  ///   Copies this Color, changing its <see cref="HueDegrees"/>,
+  ///   Copies this Color, changing its <see cref="Hue"/>,
   ///   <see cref="Chroma"/>, <see cref="Luminosity"/>, and <see cref="Alpha"/>
   ///   as specified.
   /// </summary>
@@ -281,20 +281,20 @@ public readonly partial struct Color
   ///     setting chroma to 0 will also set hue to 0.
   ///   </para>
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The hue of the new Color in degrees.
   /// </param>
   /// <param name="chroma">The chroma of the new Color.</param>
   /// <param name="luminosity">The luminosity of the new Color.</param>
   /// <param name="alpha">The alpha (opacity) of the new Color.</param>
   /// <returns>The modified Color.</returns>
-  public Color WithIntHCL(int? hueDegrees = null, int? chroma = null, int? luminosity = null, int? alpha = null)
-    => Color.FromHCL(hueDegrees ?? HueDegrees, chroma / 255.0 ?? Chroma, luminosity / 255.0 ?? Luminosity, alpha / 255.0 ?? Alpha);
+  public Color WithIntHCL(int? hue = null, int? chroma = null, int? luminosity = null, int? alpha = null)
+    => Color.FromHCL(hue ?? Hue, chroma / 255.0 ?? Chroma, luminosity / 255.0 ?? Luminosity, alpha / 255.0 ?? Alpha);
   #endregion
 
   #region HSV
   /// <summary>
-  ///   Copies this Color, changing its <see cref="HueDegrees"/>,
+  ///   Copies this Color, changing its <see cref="Hue"/>,
   ///   <see cref="VSaturation"/>, <see cref="Value"/>, and <see cref="Alpha"/>
   ///   as specified.
   /// </summary>
@@ -311,7 +311,7 @@ public readonly partial struct Color
   ///     saturation to 0 will also set hue to 0.
   ///   </para>
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The hue of the new Color in degrees.
   /// </param>
   /// <param name="saturation">
@@ -320,11 +320,11 @@ public readonly partial struct Color
   /// <param name="value">The value of the new Color.</param>
   /// <param name="alpha">The alpha (opacity) of the new Color.</param>
   /// <returns>The modified Color.</returns>
-  public Color WithHSV(double? hueDegrees = null, double? saturation = null, double? value = null, double? alpha = null)
-    => Color.FromHSV(hueDegrees ?? HueDegrees, saturation ?? VSaturation, value ?? Value, alpha ?? Alpha);
+  public Color WithHSV(double? hue = null, double? saturation = null, double? value = null, double? alpha = null)
+    => Color.FromHSV(hue ?? Hue, saturation ?? VSaturation, value ?? Value, alpha ?? Alpha);
 
   /// <summary>
-  ///   Copies this Color, changing its <see cref="HueDegrees"/>,
+  ///   Copies this Color, changing its <see cref="Hue"/>,
   ///   <see cref="VSaturation"/>, <see cref="Value"/>, and <see cref="Alpha"/>
   ///   as specified.
   /// </summary>
@@ -341,7 +341,7 @@ public readonly partial struct Color
   ///     saturation to 0 will also set hue to 0.
   ///   </para>
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The hue of the new Color in degrees.
   /// </param>
   /// <param name="saturation">
@@ -350,11 +350,11 @@ public readonly partial struct Color
   /// <param name="value">The value of the new Color.</param>
   /// <param name="alpha">The alpha (opacity) of the new Color.</param>
   /// <returns>The modified Color.</returns>
-  public Color WithIntHSV(int? hueDegrees = null, int? saturation = null, int? value = null, int? alpha = null)
-    => Color.FromHSV(hueDegrees ?? HueDegrees, saturation / 255.0 ?? VSaturation, value / 255.0 ?? Value, alpha / 255.0 ?? Alpha);
+  public Color WithIntHSV(int? hue = null, int? saturation = null, int? value = null, int? alpha = null)
+    => Color.FromHSV(hue ?? Hue, saturation / 255.0 ?? VSaturation, value / 255.0 ?? Value, alpha / 255.0 ?? Alpha);
 
   /// <summary>
-  ///   Copies this Color, changing its <see cref="HueDegrees"/>, <see cref="Chroma"/>
+  ///   Copies this Color, changing its <see cref="Hue"/>, <see cref="Chroma"/>
   ///   <see cref="Value"/>, and <see cref="Alpha"/> as specified.
   /// </summary>
   /// <remarks>
@@ -371,18 +371,18 @@ public readonly partial struct Color
   ///     setting chroma to 0 will also set hue to 0.
   ///   </para>
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The hue of the new Color in degrees.
   /// </param>
   /// <param name="chroma">The chroma of the new Color.</param>
   /// <param name="value">The value of the new Color.</param>
   /// <param name="alpha">The alpha (opacity) of the new Color.</param>
   /// <returns>The modified Color.</returns>
-  public Color WithHCV(double? hueDegrees = null, double? chroma = null, double? value = null, double? alpha = null)
-    => Color.FromHCV(hueDegrees ?? HueDegrees, chroma ?? Chroma, value ?? Value, alpha ?? Alpha);
+  public Color WithHCV(double? hue = null, double? chroma = null, double? value = null, double? alpha = null)
+    => Color.FromHCV(hue ?? Hue, chroma ?? Chroma, value ?? Value, alpha ?? Alpha);
 
   /// <summary>
-  ///   Copies this Color, changing its <see cref="HueDegrees"/>, <see cref="Chroma"/>
+  ///   Copies this Color, changing its <see cref="Hue"/>, <see cref="Chroma"/>
   ///   <see cref="Value"/>, and <see cref="Alpha"/> as specified.
   /// </summary>
   /// <remarks>
@@ -399,14 +399,14 @@ public readonly partial struct Color
   ///     setting chroma to 0 will also set hue to 0.
   ///   </para>
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The hue of the new Color in degrees.
   /// </param>
   /// <param name="chroma">The chroma of the new Color.</param>
   /// <param name="value">The value of the new Color.</param>
   /// <param name="alpha">The alpha (opacity) of the new Color.</param>
   /// <returns>The modified Color.</returns>
-  public Color WithIntHCV(int? hueDegrees = null, int? chroma = null, int? value = null, int? alpha = null)
-    => Color.FromHCV(hueDegrees ?? HueDegrees, chroma / 255.0 ?? Chroma, value / 255.0 ?? Value, alpha / 255.0 ?? Alpha);
+  public Color WithIntHCV(int? hue = null, int? chroma = null, int? value = null, int? alpha = null)
+    => Color.FromHCV(hue ?? Hue, chroma / 255.0 ?? Chroma, value / 255.0 ?? Value, alpha / 255.0 ?? Alpha);
   #endregion
 }

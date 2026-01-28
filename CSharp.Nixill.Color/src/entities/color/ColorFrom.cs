@@ -318,7 +318,7 @@ public readonly partial struct Color
   ///     hue flipped 180°.
   ///   </para>
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The Hue of the Color, given in degrees. Is automatically
   ///   normalized to the range of [0, 360).
   /// </param>
@@ -332,8 +332,8 @@ public readonly partial struct Color
   ///   The Alpha (opacity) of the Color.
   /// </param>
   /// <returns>The created Color.</returns>
-  public static Color FromHMM(double hueDegrees, double minColor, double maxColor, double alpha = 1) =>
-    (double.IsNaN(hueDegrees)) ?
+  public static Color FromHMM(double hue, double minColor, double maxColor, double alpha = 1) =>
+    (double.IsNaN(hue)) ?
     new Color(
       red: Internal.Lerp(0.5, minColor, maxColor),
       green: Internal.Lerp(0.5, minColor, maxColor),
@@ -341,9 +341,9 @@ public readonly partial struct Color
       alpha: alpha
     ) :
     new Color(
-      red: Internal.Lerp(GetRedFactor(hueDegrees), minColor, maxColor),
-      green: Internal.Lerp(GetGreenFactor(hueDegrees), minColor, maxColor),
-      blue: Internal.Lerp(GetBlueFactor(hueDegrees), minColor, maxColor),
+      red: Internal.Lerp(GetRedFactor(hue), minColor, maxColor),
+      green: Internal.Lerp(GetGreenFactor(hue), minColor, maxColor),
+      blue: Internal.Lerp(GetBlueFactor(hue), minColor, maxColor),
       alpha: alpha
     );
 
@@ -364,7 +364,7 @@ public readonly partial struct Color
   ///     hue flipped 180°.
   ///   </para>
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The Hue of the Color, given in degrees. Is automatically
   ///   normalized to the range of [0, 360).
   /// </param>
@@ -378,16 +378,16 @@ public readonly partial struct Color
   ///   The Alpha (opacity) of the Color.
   /// </param>
   /// <returns>The created Color.</returns>
-  public static Color FromIntHMM(int hueDegrees, int minColor, int maxColor, int alpha = 255) => new Color(
-      red: Internal.Lerp(GetRedFactor(hueDegrees), minColor / 255.0, maxColor / 255.0),
-      green: Internal.Lerp(GetGreenFactor(hueDegrees), minColor / 255.0, maxColor / 255.0),
-      blue: Internal.Lerp(GetBlueFactor(hueDegrees), minColor / 255.0, maxColor / 255.0),
+  public static Color FromIntHMM(int hue, int minColor, int maxColor, int alpha = 255) => new Color(
+      red: Internal.Lerp(GetRedFactor(hue), minColor / 255.0, maxColor / 255.0),
+      green: Internal.Lerp(GetGreenFactor(hue), minColor / 255.0, maxColor / 255.0),
+      blue: Internal.Lerp(GetBlueFactor(hue), minColor / 255.0, maxColor / 255.0),
       alpha: alpha
     );
 
-  static double GetRedFactor(double hueDegrees) => Math.Clamp(Math.Abs(3 - Internal.NNMod(hueDegrees / 60, 6)), 1, 2) - 1;
-  static double GetGreenFactor(double hueDegrees) => Math.Clamp(Math.Abs(3 - Internal.NNMod(hueDegrees / 60 + 4, 6)), 1, 2) - 1;
-  static double GetBlueFactor(double hueDegrees) => Math.Clamp(Math.Abs(3 - Internal.NNMod(hueDegrees / 60 + 2, 6)), 1, 2) - 1;
+  static double GetRedFactor(double hue) => Math.Clamp(Math.Abs(3 - Internal.NNMod(hue / 60, 6)), 1, 2) - 1;
+  static double GetGreenFactor(double hue) => Math.Clamp(Math.Abs(3 - Internal.NNMod(hue / 60 + 4, 6)), 1, 2) - 1;
+  static double GetBlueFactor(double hue) => Math.Clamp(Math.Abs(3 - Internal.NNMod(hue / 60 + 2, 6)), 1, 2) - 1;
   #endregion
 
   #region Luminosity
@@ -401,7 +401,7 @@ public readonly partial struct Color
   ///   the range of [0, 1], but values outside this range may cause
   ///   undefined behavior.
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The Hue of the Color, given in degrees. Is automatically
   ///   normalized to the range of [0, 360).
   /// </param>
@@ -415,8 +415,8 @@ public readonly partial struct Color
   ///   The Alpha (opacity) of the Color.
   /// </param>
   /// <returns>The created Color.</returns>
-  public static Color FromHSL(double hueDegrees, double saturation, double luminosity, double alpha = 1)
-    => FromHCL(hueDegrees, (1 - Math.Abs(2 * luminosity - 1)) * saturation, luminosity, alpha);
+  public static Color FromHSL(double hue, double saturation, double luminosity, double alpha = 1)
+    => FromHCL(hue, (1 - Math.Abs(2 * luminosity - 1)) * saturation, luminosity, alpha);
 
   /// <summary>
   ///   Generates a color from a given hue (in degrees), saturation, and
@@ -428,7 +428,7 @@ public readonly partial struct Color
   ///   the range of [0, 255], but values outside this range may cause
   ///   undefined behavior.
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The Hue of the Color, given in degrees. Is automatically
   ///   normalized to the range of [0, 360).
   /// </param>
@@ -442,8 +442,8 @@ public readonly partial struct Color
   ///   The Alpha (opacity) of the Color.
   /// </param>
   /// <returns>The created Color.</returns>
-  public static Color FromIntHSL(int hueDegrees, int saturation, int luminosity, int alpha = 255)
-    => FromHSL(hueDegrees, saturation / 255.0, luminosity / 255.0, alpha / 255.0);
+  public static Color FromIntHSL(int hue, int saturation, int luminosity, int alpha = 255)
+    => FromHSL(hue, saturation / 255.0, luminosity / 255.0, alpha / 255.0);
 
   /// <summary>
   ///   Generates a color from a given hue (in degrees), chroma, and
@@ -456,7 +456,7 @@ public readonly partial struct Color
   ///   must be between 0 and 1. Values outside these ranges are allowed,
   ///   but may cause undefined behavior.
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The Hue of the Color, given in degrees. Is automatically
   ///   normalized to the range of [0, 360).
   /// </param>
@@ -470,11 +470,11 @@ public readonly partial struct Color
   ///   The Alpha (opacity) of the Color.
   /// </param>
   /// <returns>The created Color.</returns>
-  public static Color FromHCL(double hueDegrees, double chroma, double luminosity, double alpha = 1)
+  public static Color FromHCL(double hue, double chroma, double luminosity, double alpha = 1)
   {
     double minColor = luminosity - (chroma / 2);
     double maxColor = chroma + minColor;
-    return FromHMM(hueDegrees, minColor, maxColor, alpha);
+    return FromHMM(hue, minColor, maxColor, alpha);
   }
 
   /// <summary>
@@ -488,7 +488,7 @@ public readonly partial struct Color
   ///   must be between 0 and 255. Values outside these ranges are
   ///   allowed, but may cause undefined behavior.
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The Hue of the Color, given in degrees. Is automatically
   ///   normalized to the range of [0, 360).
   /// </param>
@@ -502,8 +502,8 @@ public readonly partial struct Color
   ///   The Alpha (opacity) of the Color.
   /// </param>
   /// <returns>The created Color.</returns>
-  public static Color FromIntHCL(int hueDegrees, int chroma, int luminosity, int alpha = 255)
-    => FromHCL(hueDegrees / 1.0, chroma / 255.0, luminosity / 255.0, alpha / 255.0);
+  public static Color FromIntHCL(int hue, int chroma, int luminosity, int alpha = 255)
+    => FromHCL(hue / 1.0, chroma / 255.0, luminosity / 255.0, alpha / 255.0);
   #endregion
 
   #region Value
@@ -529,8 +529,8 @@ public readonly partial struct Color
   ///   The Alpha (opacity) of the Color.
   /// </param>
   /// <returns>The created Color.</returns>
-  public static Color FromHSV(double hueDegrees, double saturation, double value, double alpha = 1)
-    => FromHCV(hueDegrees, value * saturation, value, alpha);
+  public static Color FromHSV(double hue, double saturation, double value, double alpha = 1)
+    => FromHCV(hue, value * saturation, value, alpha);
 
   /// <summary>
   ///   Generates a color from a given hue (in degrees), saturation, and value.
@@ -540,7 +540,7 @@ public readonly partial struct Color
   ///   need not necessarily be constrained to the range of [0, 255], but
   ///   values outside this range may cause undefined behavior.
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The Hue of the Color, given in degrees. Is automatically
   ///   normalized to the range of [0, 360).
   /// </param>
@@ -554,8 +554,8 @@ public readonly partial struct Color
   ///   The Alpha (opacity) of the Color.
   /// </param>
   /// <returns>The created Color.</returns>
-  public static Color FromIntHSV(int hueDegrees, int saturation, int value, int alpha = 255)
-    => FromHSV(hueDegrees, saturation / 255.0, value / 255.0, alpha / 255.0);
+  public static Color FromIntHSV(int hue, int saturation, int value, int alpha = 255)
+    => FromHSV(hue, saturation / 255.0, value / 255.0, alpha / 255.0);
 
   /// <summary>
   ///   Generates a color from a given hue (in degrees), chroma, and value.
@@ -567,7 +567,7 @@ public readonly partial struct Color
   ///   between 0 and 1. Values outside these ranges are allowed, but may
   ///   cause undefined behavior.
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The Hue of the Color, given in degrees. Is automatically
   ///   normalized to the range of [0, 360).
   /// </param>
@@ -581,11 +581,11 @@ public readonly partial struct Color
   ///   The Alpha (opacity) of the Color.
   /// </param>
   /// <returns>The created Color.</returns>
-  public static Color FromHCV(double hueDegrees, double chroma, double value, double alpha = 1)
+  public static Color FromHCV(double hue, double chroma, double value, double alpha = 1)
   {
     double maxColor = value;
     double minColor = maxColor - chroma;
-    return FromHMM(hueDegrees, minColor, maxColor, alpha);
+    return FromHMM(hue, minColor, maxColor, alpha);
   }
 
   /// <summary>
@@ -598,7 +598,7 @@ public readonly partial struct Color
   ///   between 0 and 255. Values outside these ranges are allowed, but
   ///   may cause undefined behavior.
   /// </remarks>
-  /// <param name="hueDegrees">
+  /// <param name="hue">
   ///   The Hue of the Color, given in degrees. Is automatically
   ///   normalized to the range of [0, 360).
   /// </param>
@@ -612,7 +612,7 @@ public readonly partial struct Color
   ///   The Alpha (opacity) of the Color.
   /// </param>
   /// <returns>The created Color.</returns>
-  public static Color FromIntHCV(int hueDegrees, int chroma, int value, int alpha = 255)
-    => FromHCV(hueDegrees / 1.0, chroma / 255.0, value / 255.0, alpha / 255.0);
+  public static Color FromIntHCV(int hue, int chroma, int value, int alpha = 255)
+    => FromHCV(hue / 1.0, chroma / 255.0, value / 255.0, alpha / 255.0);
   #endregion
 }
